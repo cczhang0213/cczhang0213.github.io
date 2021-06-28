@@ -42,7 +42,7 @@ $(function () {
           var _random_int = _getRandomInt(0, _list.length-1);
           if ($.inArray(_random_int, _result_index) === -1) {
               _result_index.push(_random_int);
-              _result.append('<div>' + _list[_random_int] + '</div> is a/are good choice(s) of you');
+              _result.append('<div>' + _list[_random_int] + '</div> is a good choice of you');
           }
           else {
               _r--;
