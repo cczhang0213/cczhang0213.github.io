@@ -1,0 +1,292 @@
+
+.letters{ 
+  font-size:large;
+  font-display:var(--color-brand-accent)
+
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  font-weight: 900;
+  
+  &, * {
+    cursor: none;
+  }
+}
+
+.shapes {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: #2128bd;
+  overflow: hidden;
+}
+
+.shape {
+  will-change: transform;
+  position: absolute;
+  border-radius: 50%;
+  
+  $shapes: (#005ffe: 650px, #ffe5e3: 440px, #ffcc57: 270px);
+  
+  @each $color, $size in $shapes {
+    &.shape-#{index($shapes, ($color $size))} {
+      background: $color;
+      width: $size;
+      height: $size;
+      margin: (-$size/2) 0 0 (-$size/2);
+    }
+  }
+}
+
+.button1 {
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 10%;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/*@property --cost {
+	syntax: '<integer>';
+	initial-value: 0;
+	inherits: true
+}*/
+* {
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+}
+
+body, body :not(script):not(style), ::before {
+  display: grid;
+}
+
+body {
+  grid-gap: 2em;
+  grid-template-columns: repeat(auto-fit, Min(100%, 12rem));
+  place-content: center;
+  min-height: 100vh;
+  font: 900 1.25em/1.25 sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+article {
+  --m: calc(.5*(var(--n) - 1));
+  --abs: Max(calc(var(--i) - var(--m)), calc(var(--m) - var(--i)));
+  --val: calc(var(--abs)*(1 + .5*var(--i))/var(--n));
+  --dt0: calc(var(--val)*1s);
+  --dt1: calc((var(--val) + 1)*1s);
+  --dt2: calc((var(--val) + 1.5)*1s);
+  --dt3: calc((var(--val) + 2)*1s);
+  --dt4: calc((var(--val) + 2.5)*1s);
+  --dt5: calc((var(--val) + 3)*1s);
+  overflow: hidden;
+  padding-bottom: 1rem;
+  backface-visibility: hidden;
+  transform: perspective(25em);
+  background: #fff content-box;
+  filter: drop-shadow(4px 4px 13px);
+  animation: card 1s ease-out var(--dt0) backwards, cost 1s var(--dt4) backwards;
+}
+article ::before, article ::after, article button {
+  --j: 1;
+  --sgn-j: calc(2*var(--j) - 1);
+  --not-j: calc(1 - var(--j));
+  --mask:
+      linear-gradient(calc(var(--sgn-j)*90deg),
+              red 33.333%, transparent 66.667%) calc(var(--not-j)*100%)/ 300%;
+}
+
+@keyframes card {
+  0% {
+    transform: perspective(25em) rotatey(0.5turn);
+  }
+}
+header {
+  grid-gap: 1rem;
+  padding: 2rem 0.5em 1rem;
+  transform-origin: 100% 100%;
+  background: linear-gradient(var(--grad));
+  color: #fff;
+  counter-reset: cost var(--cost);
+  animation: head 1s ease-out var(--dt1) backwards;
+}
+header::before {
+  place-self: center;
+  place-content: center;
+  border: solid 4px currentcolor;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  animation: ring 1s ease-out var(--dt3) backwards;
+}
+header::after {
+  height: 4px;
+  background: currentcolor;
+  clip-path: inset(0 round 4px);
+  animation: line 1s ease-out var(--dt2) backwards;
+  content: "";
+}
+
+@keyframes head {
+  0% {
+    transform: translate(-100%) skewx(35deg);
+  }
+}
+@keyframes ring {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+@keyframes line {
+  0% {
+    clip-path: inset(0 50% round 4px);
+  }
+}
+h3::before, h3::after {
+  place-self: center;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+  animation: text 1s ease-out var(--dt5) backwards;
+}
+h3::before {
+  --j: 0;
+  animation-name: text, move;
+  content: attr(data-name);
+}
+h3::after {
+  font-size: 0.6em;
+  font-weight: 100;
+  content: "";
+}
+
+@keyframes move {
+  0% {
+    transform: translate(50%);
+  }
+}
+section {
+  margin-bottom: -1rem;
+  border-bottom: solid 1rem transparent;
+  background-color: inherit;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1rem), 50% 100%, 0 calc(100% - 1rem));
+}
+
+button {
+  place-content: center;
+  line-height: 3;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+  cursor: pointer;
+  animation: text 1s ease-out var(--dt2) backwards;
+}
+
+@keyframes text {
+  0% {
+    -webkit-mask-position: calc(var(--j)*100%);
+    mask-position: calc(var(--j)*100%);
+  }
+}
+
+// Learn more:
+// @link https://dev.to/5t3ph/pure-css-typing-animation-1nld
+
+// "Type" width
+// - controls how much the word container expands when each letter is "typed"
+// - will need adjusted depending on word and typeface
+$chWidth: 0.49em;
+// Word length
+$chCount: 9;
+// Typing animation length
+$typeDuration: 180ms * $chCount;
+
+$color: slateblue;
+$bg: #f7f3ff;
+$cursor: scale-color($color, $lightness: -60%);
+
+body {
+	display: grid;
+	place-items: center;
+	min-height: 100vh;
+	background-color: $bg;
+	color: $color;
+	font-family: Rosario, sans-serif;
+}
+
+h1 {
+	font-size: 4.5rem;
+	text-align: center;
+}
+
+.type-animation {
+	// Required for keeping expected alignment
+	display: inline-flex;
+	// Start out by hiding via width and overflow
+	width: 0;
+	overflow: hidden;
+	// Leave room for cursor!
+	padding-right: 0.08em;
+	position: relative;
+
+	&:after {
+		content: "";
+		background: $bg;
+		position: absolute;
+		right: 0;
+		top: -0.05em;
+		bottom: -0.05em;
+		width: 0.08em;
+		border-right: 2px solid transparent;
+	}
+
+	&.animating {
+		animation: type $typeDuration;
+		// "stick" to last frame
+		animation-fill-mode: forwards;
+		animation-delay: 1s;
+
+		&:after {
+			$cursorLoopCount: ((($chCount + 1) * 180)/320) + 3;
+			animation: cursor 320ms $cursorLoopCount ease-in-out;
+		}
+	}
+}
+
+@keyframes cursor {
+	0%,
+	100% {
+		border-color: $bg;
+	}
+	50% {
+		border-color: $cursor;
+	}
+	100% {
+		width: 0;
+	}
+}
+
+$frameSize: 100 / $chCount;
+@keyframes type {
+	@for $ch from 1 to $chCount {
+		$frame: $ch * $frameSize;
+		#{$frame}% {
+			width: $ch * $chWidth;
+		}
+	}
+	100% {
+		width: ($chCount - 1) * $chWidth;
+		padding-right: 0;
+	}
+}
+
+
+
